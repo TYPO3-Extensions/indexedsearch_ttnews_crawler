@@ -1,0 +1,2 @@
+The crawler should get an information when a news-entry is deleted or hidden.
+Currently all news will be crawled but never removed from the index.
