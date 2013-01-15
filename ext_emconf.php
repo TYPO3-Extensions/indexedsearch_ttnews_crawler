@@ -1,14 +1,14 @@
 <?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "indexedsearch_ttnews_crawler".
-#
-# Auto generated 24-09-2012 12:47
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+ * Extension Manager/Repository config file for ext "indexedsearch_ttnews_crawler".
+ *
+ * Auto generated 15-01-2013 14:47
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'IndexedSearch Crawler for tt_news',
@@ -43,7 +43,9 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:6:{s:8:"TODO.txt";s:4:"953a";s:13:"changelog.txt";s:4:"34ba";s:17:"ext_localconf.php";s:4:"98b4";s:14:"ext_tables.php";s:4:"b94d";s:14:"ext_tables.sql";s:4:"3146";s:44:"hooks/class.tx_indexedsearch_newscrawler.php";s:4:"c4f8";}',
+	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"ec2d";s:17:"ext_localconf.php";s:4:"0c9b";s:14:"ext_tables.php";s:4:"0421";s:14:"ext_tables.sql";s:4:"3146";s:12:"doc/TODO.txt";s:4:"953a";s:47:"hooks/class.tx_indexedsearch_ttnews_crawler.php";s:4:"ba54";}',
 	'suggests' => array(
 	),
 );
+
+?>
