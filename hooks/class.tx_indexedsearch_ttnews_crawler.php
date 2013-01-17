@@ -118,7 +118,7 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 			foreach ($recs as $r) {
 
 				$recordCatSelection = $this->getRecordsCategorySelection($r);
-				if ($this->categorySelectionIsPermitted($recordCatSelection, $indexingCatSelection)) {
+				if ($this->categorySelectionIsPermitted($recordCatSelection, $indexingCatSelection, $cfgRec['news_includenewswithoutcategory'])) {
 					// Index single record:
 					$this->indexSingleNewsRecord($r, $cfgRec, $rl);
 				}
@@ -286,7 +286,7 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 					self::$globalConfig = $this->loadTS($cfgRec['pid']);
 					$recordCatSelection = $this->getRecordsCategorySelection($currentRecord);
 					$indexingCatSelection = $this->getIndexingCategorySelection(t3lib_div::trimExplode(',', $cfgRec['news_categoryselection']), $cfgRec['news_usesubcategories']);
-					if ($this->categorySelectionIsPermitted($recordCatSelection, $indexingCatSelection)) {
+					if ($this->categorySelectionIsPermitted($recordCatSelection, $indexingCatSelection, $cfgRec['news_includenewswithoutcategory'])) {
 						$this->indexSingleNewsRecord($currentRecord, $cfgRec);
 					}
 				}
@@ -299,9 +299,13 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 	 *
 	 * @param array $recordCatSelection
 	 * @param array $indexingCatSelection
+	 * @param boolean $includeNewsWithoutCategory
 	 * @return boolean
 	 */
-	private function categorySelectionIsPermitted($recordCatSelection, $indexingCatSelection) {
+	private function categorySelectionIsPermitted($recordCatSelection, $indexingCatSelection, $includeNewsWithoutCategory = false) {
+
+		if ($includeNewsWithoutCategory && empty($recordCatSelection))
+			return true;
 
 		foreach ($recordCatSelection as $catSelection) {
 			if (in_array($catSelection, $indexingCatSelection)) {

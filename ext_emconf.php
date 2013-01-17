@@ -3,7 +3,7 @@
 /***************************************************************
  * Extension Manager/Repository config file for ext "indexedsearch_ttnews_crawler".
  *
- * Auto generated 15-01-2013 14:47
+ * Auto generated 17-01-2013 14:02
  *
  * Manual updates:
  * Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Adds a crawler for tt_news entries into the indexed_search configuration',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '1.0.1',
+	'version' => '1.1.0',
 	'dependencies' => 'indexed_search,crawler,tt_news',
 	'conflicts' => '',
 	'priority' => '',
@@ -43,7 +43,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"ec2d";s:17:"ext_localconf.php";s:4:"0c9b";s:14:"ext_tables.php";s:4:"0421";s:14:"ext_tables.sql";s:4:"3146";s:12:"doc/TODO.txt";s:4:"953a";s:47:"hooks/class.tx_indexedsearch_ttnews_crawler.php";s:4:"ba54";}',
+	'_md5_values_when_last_written' => 'a:8:{s:12:"ext_icon.gif";s:4:"c96c";s:17:"ext_localconf.php";s:4:"0c9b";s:14:"ext_tables.php";s:4:"995c";s:14:"ext_tables.sql";s:4:"1219";s:17:"locallang_tca.xml";s:4:"0713";s:14:"doc/manual.pdf";s:4:"0a8b";s:14:"doc/manual.sxw";s:4:"8565";s:47:"hooks/class.tx_indexedsearch_ttnews_crawler.php";s:4:"dec4";}',
 	'suggests' => array(
 	),
 );
