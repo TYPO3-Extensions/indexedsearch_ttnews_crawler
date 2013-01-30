@@ -350,7 +350,7 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 
 		$catSelection = $indexingCatSelection;
 
-		if ($includeSubCategories) {
+		if ($includeSubCategories && !empty($catSelection)) {
 			$subcats = array_unique(explode(',', tx_ttnews_div::getSubCategories(implode(',', $catSelection), t3lib_BEfunc::BEenableFields('tt_news_cat'))));
 
 			$catSelection = array_merge($catSelection, $subcats);
