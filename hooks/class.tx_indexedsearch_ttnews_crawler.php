@@ -24,7 +24,7 @@ require_once t3lib_extMgm::extPath('tt_news') . 'pi/class.tx_ttnews.php';
  */
 class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 
-	private static $globalConfig;
+	private $globalConfig;
 
 	private static $linkParams;
 
@@ -37,27 +37,23 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 	 * This function returs the whole TypoScript-Setup array
 	 *
 	 * @param $pageId int
-	 * @param $template_uid int
 	 * @return array
 	 */
-	private function loadTS($pageId, $template_uid = 0) {
+	private function loadTS($pageId) {
+		/** @var $TSFE tslib_fe */
+		/** @var $TT t3lib_timeTrack */
+		global $TSFE, $TT;
+
 		// needed by some extensions like realURL
-		$GLOBALS['TT'] = t3lib_div::makeInstance('t3lib_timeTrack');
+		$TT = t3lib_div::makeInstance('t3lib_timeTrack');
 
-		$GLOBALS['TSFE'] = t3lib_div::makeInstance('tslib_fe', array(), $pageId, 0);
-		$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$TSFE = t3lib_div::makeInstance('tslib_fe', array(), $pageId, 0);
+		$TSFE->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$TSFE->rootLine = $TSFE->sys_page->getRootLine($pageId);
+		$TSFE->initTemplate();
+		$TSFE->getConfigArray();
 
-		// Gets the rootLine
-		$rootLine = $GLOBALS['TSFE']->sys_page->getRootLine($pageId);
-
-		$GLOBALS['TSFE']->tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext'); // Get Instance of the tsParser extension
-		$GLOBALS['TSFE']->tmpl->tt_track = 0; // Do not log time-performance information
-		$GLOBALS['TSFE']->tmpl->init();
-
-		$GLOBALS['TSFE']->tmpl->runThroughTemplates($rootLine, $template_uid); // This generates the constants/config + hierarchy info for the template.
-		$GLOBALS['TSFE']->tmpl->generateConfig();
-
-		return $GLOBALS['TSFE']->config = $GLOBALS['TSFE']->tmpl->setup;
+		return $TSFE->tmpl->setup;
 	}
 
 
@@ -93,7 +89,7 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 		// Init:
 		$pid = intval($cfgRec['alternative_source_pid']) ? intval($cfgRec['alternative_source_pid']) : $cfgRec['pid'];
 		$numberOfRecords = $cfgRec['recordsbatch'] ? t3lib_div::intInRange($cfgRec['recordsbatch'], 1) : 250;
-		self::$globalConfig = $this->loadTS($cfgRec['pid']);
+		$this->globalConfig = $this->loadTS($cfgRec['pid']);
 
 		// Get root line:
 		$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
@@ -167,7 +163,7 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 			self::$tx_ttnews->token = md5(microtime());
 		}
 		// reset typoscript configuration
-		self::$tx_ttnews->conf = self::$globalConfig['plugin.']['tt_news.'];
+		self::$tx_ttnews->conf = $this->globalConfig['plugin.']['tt_news.'];
 
 		// Init:
 		$rl = is_array($rl) ? $rl : $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
@@ -283,10 +279,10 @@ class tx_indexedsearch_ttnews_crawler extends tx_indexedsearch_crawler {
 				);
 
 				foreach ($indexingConfigurations as $cfgRec) {
-					self::$globalConfig = $this->loadTS($cfgRec['pid']);
 					$recordCatSelection = $this->getRecordsCategorySelection($currentRecord);
 					$indexingCatSelection = $this->getIndexingCategorySelection(t3lib_div::trimExplode(',', $cfgRec['news_categoryselection']), $cfgRec['news_usesubcategories']);
 					if ($this->categorySelectionIsPermitted($recordCatSelection, $indexingCatSelection, $cfgRec['news_includenewswithoutcategory'])) {
+                        $this->globalConfig = $this->loadTS($cfgRec['pid']);
 						$this->indexSingleNewsRecord($currentRecord, $cfgRec);
 					}
 				}
